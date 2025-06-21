@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Ảnh Rơi & Nảy Như Bóng - JPG</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #e0f7fa;
+    }
+
+    .image {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover; /* giúp ảnh jpg bo tròn đẹp */
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { top: -150px; opacity: 0; }
+      10% { opacity: 1; }
+      100% { top: 110%; opacity: 1; }
+    }
+
+    .bounce-ball {
+      animation: bounceBall 0.4s ease;
+    }
+
+    @keyframes bounceBall {
+      0%   { transform: scale(1); }
+      30%  { transform: scale(1.3); }
+      50%  { transform: scale(0.85); }
+      70%  { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  // Danh sách 7 ảnh JPG
+  const images = Array.from({ length: 7 }, (_, i) => `images/${i + 1}.jpg`);
+
+  function createFallingImage() {
+    const img = document.createElement('img');
+    img.src = images[Math.floor(Math.random() * images.length)];
+    img.classList.add('image');
+
+    // Vị trí ngang ngẫu nhiên
+    img.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+    img.style.animationDuration = (Math.random() * 5 + 5) + 's';
+
+    img.addEventListener('click', () => {
+      img.classList.add('bounce-ball');
+      setTimeout(() => img.classList.remove('bounce-ball'), 400);
+    });
+
+    document.body.appendChild(img);
+
+    // Xóa sau khi rơi khỏi màn hình
+    setTimeout(() => {
+      if (img.parentElement) img.remove();
+    }, 12000);
+  }
+
+  setInterval(createFallingImage, 300);
+</script>
+
+</body>
+</html>
